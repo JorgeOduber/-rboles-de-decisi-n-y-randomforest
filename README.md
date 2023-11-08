@@ -1,1 +1,2 @@
-# -rboles-de-decisi-n-y-randomforest
+# -Arboles-de-decision-y-Randomforest
+En este proyecto usamos R studio y de las técnicas de Árboles de decisión y randomforest para determinar que las aves con mayor capacidad fonética presentaban mejores recursos para la resolución de problemas. Si bien es un estudio netamente científico y en la revista, estan hechos algunos análisis, decidí usar la data para hacer un proyecto sobre las variables relevantes para poder establecer un árbolde decisión y el uso de randomforest. La idea de este proyecto es ver el uso de la herramienta y que tan útil nos puede servir para la toma de decisiones. Empezamos con un análisis exploratorio, gráficos de correlaciones y finalmente diagrama del árbol de decisión.
