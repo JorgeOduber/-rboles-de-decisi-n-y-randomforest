@@ -1,0 +1,122 @@
+---
+title: "Árbol de decisión artículo de revista Science Sept 2023"
+author: "Jorge Oduber"
+date: "2023-11-07"
+output: html_document
+---
+```{r}
+#Correr librería y lectura de datos
+library(DataExplorer)
+library(rpart)
+DB<-read.table("Audet_Science_2023_dataset.txt", stringsAsFactors = TRUE, sep="\t", header=TRUE)
+```
+
+```{r}
+#Visualizar primeras lineas
+head(DB)
+```
+
+```{r}
+#Últimas filas
+tail(DB)
+```
+
+
+```{r}
+# veamos la estructura de la base de datos
+str(DB)
+```
+
+```{r}
+#Gráfico de estructura de datos
+plot_str(DB)
+```
+
+```{r}
+#Gráficos de barra
+plot_bar(DB)
+```
+
+```{r}
+#Gráficos de densidad
+plot_density(DB,scale_x = "log10")
+```
+
+```{r}
+#Histogramas
+plot_histogram(DB,scale_x = "log10")
+```
+
+```{r}
+#Gráfico de dispersión
+plot(as.data.frame(cbind(DB$Food_deprivation_time,DB$Shyness,DB$Neophobia,DB$Bodyweight,DB$species)))
+```
+
+
+```{r}
+num.cols <- sapply(DB, is.numeric)
+corr.data <- c("Food_deprivation_time", "Shyness", "Neophobia", "Relative_brain_size", "Bodyweight")
+datos <- DB[, corr.data]
+
+# Calcular la matriz de correlación
+matriz_correlacion <- cor(datos)
+
+# Imprimir la matriz de correlación
+print(matriz_correlacion)
+
+```
+
+```{r}
+#Visualizar la matriz de correlación
+library(corrplot)
+print(corrplot(matriz_correlacion,method = "color"))
+```
+
+
+```{r}
+#Construcción de a´rbol de decisión
+tree <- rpart(DB$Food_deprivation_time ~ Shyness + Bodyweight + 
+                Neophobia +  Relative_brain_size, method='class', data= DB)
+```
+
+```{r}
+#Clasificación del árbol
+printcp(tree)
+```
+
+```{r}
+#Visualización del árbol
+library(rpart.plot)
+# Seleccionar las variables de interés
+variables <- c("Food_deprivation_time", "Shyness", "Bodyweight", "Neophobia", "Relative_brain_size")
+datos <- DB[, variables]
+# Crear el modelo del árbol de decisión
+modelo <- rpart(Food_deprivation_time  ~ ., data = datos)
+
+# Graficar el árbol de decisión con colores
+rpart.plot(modelo, type = 2, extra = 1)
+
+```
+
+```{r}
+#Randomforest
+library(randomForest)
+library(rpart.plot)
+
+variables <- c("Food_deprivation_time", "Shyness", "Bodyweight", "Neophobia", "Relative_brain_size")
+datos <- DB[, variables]
+
+# Crear el modelo de Random Forest
+model <- randomForest(Food_deprivation_time ~ ., data = datos)
+
+```
+
+```{r}
+#Resumen del modelo
+print (model)
+```
+
+```{r}
+#Importancia del modelo
+importance(model)
+```
